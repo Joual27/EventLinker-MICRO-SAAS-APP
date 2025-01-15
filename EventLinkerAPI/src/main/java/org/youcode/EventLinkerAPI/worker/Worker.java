@@ -23,7 +23,6 @@ public class Worker extends User {
 
     @ManyToMany
     @JoinTable(
-            name = "SKILL_WORKER",
             joinColumns = @JoinColumn(name = "WORKER_ID"),
             inverseJoinColumns = @JoinColumn(name = "SKILL_ID")
     )

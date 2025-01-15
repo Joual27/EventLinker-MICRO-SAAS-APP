@@ -3,6 +3,9 @@ spring:
     name: Event Linker
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_AUTH_USERNAME}
-    password: ${DB_AUTH_PASSWORD}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/event_linker_db}
+    username: ${DB_AUTH_USERNAME:postgres}
+    password: ${DB_AUTH_PASSWORD:Fasha321@}
+  jpa:
+    hibernate:
+      ddl-auto: update

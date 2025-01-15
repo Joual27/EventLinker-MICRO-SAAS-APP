@@ -20,6 +20,6 @@ import java.util.List;
 public class Skill extends BaseEntity {
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "skills")
     private List<Worker> workers;
 }

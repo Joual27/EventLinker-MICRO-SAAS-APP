@@ -19,7 +19,6 @@ import java.util.List;
 public class DM extends BaseEntity {
     @ManyToMany
     @JoinTable(
-            name = "DM_User",
             joinColumns = @JoinColumn(name = "DM_ID"),
             inverseJoinColumns = @JoinColumn(name = "PARTCIPANT_ID")
     )
