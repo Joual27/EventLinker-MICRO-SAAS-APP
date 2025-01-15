@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: Event Linker
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_AUTH_USERNAME}
+    password: ${DB_AUTH_PASSWORD}
