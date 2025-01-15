@@ -35,7 +35,7 @@ public abstract class User implements UserDetails {
     @OneToMany(mappedBy = "reviewee")
     private List<Review> receivedReviews;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "participants")
     private List<DM> dms;
 
     @Override
