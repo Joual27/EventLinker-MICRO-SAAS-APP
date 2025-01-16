@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 import org.youcode.EventLinkerAPI.user.User;
 
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 @Entity
 public class Admin extends User {
     @Override

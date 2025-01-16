@@ -9,3 +9,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  config:
+    import: optional:file:.env[.properties]
