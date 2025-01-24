@@ -11,3 +11,6 @@ spring:
       ddl-auto: update
   config:
     import: optional:file:.env[.properties]
+logging:
+  level:
+    org.springframework.security : trace

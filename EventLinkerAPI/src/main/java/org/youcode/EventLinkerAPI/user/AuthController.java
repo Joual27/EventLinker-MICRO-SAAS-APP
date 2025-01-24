@@ -13,12 +13,12 @@ import org.youcode.EventLinkerAPI.user.interfaces.AuthService;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/public/auth")
 public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register/{userType}")
-    public ResponseEntity<SuccessDTO<UserResponseDTO>> register(@PathVariable String userType, @RequestBody @Valid BaseRegistrationDTO req){
+    public ResponseEntity<SuccessDTO<UserResponseDTO>> register(@PathVariable String userType, @Valid BaseRegistrationDTO req){
         UserResponseDTO res = authService.createUser(userType, req);
         return new ResponseEntity<>(new SuccessDTO<>("Success" , res.role()+ " created Successfully" , res) , HttpStatus.CREATED);
     }
