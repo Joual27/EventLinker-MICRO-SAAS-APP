@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.shared.utils.factory.UserFactory;
 import org.youcode.EventLinkerAPI.shared.utils.interfaces.BaseRegistrationDTO;
 import org.youcode.EventLinkerAPI.shared.utils.security.JwtService;
+import org.youcode.EventLinkerAPI.user.DTOs.AccessTokenResponseDTO;
 import org.youcode.EventLinkerAPI.user.DTOs.LoginDTO;
 import org.youcode.EventLinkerAPI.user.DTOs.AuthResponseDTO;
 import org.youcode.EventLinkerAPI.user.interfaces.AuthService;
@@ -46,5 +47,10 @@ public class AuthServiceImp implements AuthService {
         String token = jwtService.generateToken(auth);
         User signedInUser = (User) auth.getPrincipal();
         return new AuthResponseDTO(signedInUser.getId() , token , signedInUser.getUserRole());
+    }
+
+    @Override
+    public AccessTokenResponseDTO refreshToken(String refreshToken){
+        return null;
     }
 }
