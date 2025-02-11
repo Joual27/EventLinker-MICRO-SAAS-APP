@@ -20,10 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserDAO userDAO;
 
     @Override
-    public UserDetails loadUserByUsername(String username){
-        User user = userDAO.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("No user was found with given Username"));
-        List<GrantedAuthority> authorities = user.getAuthorities().stream().toList();
-        return new org.springframework.security.core.userdetails.User(user.getUsername() , null  , authorities);
+    public UserDetails loadUserByUsername(String email){
+        return userDAO.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No user was found with given Email"));
+
     }
 }

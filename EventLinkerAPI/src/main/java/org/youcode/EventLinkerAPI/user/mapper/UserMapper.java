@@ -16,6 +16,4 @@ public abstract class UserMapper {
     protected LocalDateTime getDate(){
         return LocalDateTime.now();
     }
-
-
 }
