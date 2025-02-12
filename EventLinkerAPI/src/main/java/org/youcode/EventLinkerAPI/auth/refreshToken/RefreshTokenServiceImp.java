@@ -15,7 +15,7 @@ public class RefreshTokenServiceImp implements RefreshTokenService {
     private final UserDAO userDAO;
     private final long refreshTokenExpiration ;
 
-    public RefreshTokenServiceImp (RefreshTokenDAO refreshTokenDAO , UserDAO userDAO ,@Value("${JWT_EXPIRATION_TIME}")  long refreshTokenExpiration){
+    public RefreshTokenServiceImp (RefreshTokenDAO refreshTokenDAO , UserDAO userDAO ,@Value("${REFRESH_TOKEN_EXPIRATION_TIME}")  long refreshTokenExpiration){
         this.refreshTokenDAO = refreshTokenDAO;
         this.userDAO = userDAO;
         this.refreshTokenExpiration = refreshTokenExpiration;
@@ -36,7 +36,7 @@ public class RefreshTokenServiceImp implements RefreshTokenService {
     @Override
     public RefreshToken findByToken(String token) {
         return refreshTokenDAO.findByToken(token)
-                .orElseThrow(() -> new EntityNotFoundException("No Refresh Token Found With Given ID !"));
+                .orElseThrow(() -> new EntityNotFoundException("No Refresh Token Found With Given DATA"));
     }
 
     @Override
@@ -48,5 +48,8 @@ public class RefreshTokenServiceImp implements RefreshTokenService {
         return false;
     }
 
-
+    @Override
+    public void deleteToken(RefreshToken token) {
+        refreshTokenDAO.delete(token);
+    }
 }

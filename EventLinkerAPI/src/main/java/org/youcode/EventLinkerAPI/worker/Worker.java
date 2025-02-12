@@ -21,7 +21,7 @@ public class Worker extends User {
     @OneToMany(mappedBy = "applicant" , fetch = FetchType.EAGER)
     private List<Application> applications;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "WORKER_ID"),
             inverseJoinColumns = @JoinColumn(name = "SKILL_ID")
