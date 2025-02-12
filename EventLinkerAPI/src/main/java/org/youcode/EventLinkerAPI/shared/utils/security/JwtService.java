@@ -61,10 +61,6 @@ public class JwtService {
         return createToken(claims, userDetails.getUsername());
     }
 
-    public String generateToken(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return generateToken(userDetails);
-    }
 
     private List<String> getRoles(UserDetails userDetails) {
         return userDetails.getAuthorities().stream()

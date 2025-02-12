@@ -35,6 +35,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/organizer/**").hasRole("ORGANIZER")
                         .requestMatchers("/api/v1/worker/**").hasRole("WORKER")
+                        .requestMatchers("/api/v1/refresh-token").permitAll()
+                        .requestMatchers("/api/v1/logout").hasAnyRole("ORGANIZER", "WORKER" , "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

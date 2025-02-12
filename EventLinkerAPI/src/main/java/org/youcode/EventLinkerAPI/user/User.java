@@ -45,6 +45,10 @@ public abstract class User implements UserDetails {
 
     protected abstract String getUserRole();
 
+    public String getUsernameField(){
+        return username;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -52,7 +56,7 @@ public abstract class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

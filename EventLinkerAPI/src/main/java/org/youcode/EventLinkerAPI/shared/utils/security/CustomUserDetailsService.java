@@ -20,9 +20,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserDAO userDAO;
 
     @Override
-    public UserDetails loadUserByUsername(String email){
+    public UserDetails loadUserByUsername(String email) {
         return userDAO.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("No user was found with given Email"));
-
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
