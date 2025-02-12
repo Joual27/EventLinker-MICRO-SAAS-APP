@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
+import org.youcode.EventLinkerAPI.exceptions.TokenExpiredException;
 import org.youcode.EventLinkerAPI.shared.utils.DTOs.ErrorDTO;
 
 import java.time.LocalDateTime;
@@ -32,8 +33,6 @@ public class GlobalExceptionHandler {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "Validations Error", validationErrors, LocalDateTime.now());
     }
 
-
-
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDTO handleBindException(BindException e) {
@@ -52,4 +51,9 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleTokenExpiredException(TokenExpiredException e) {
+        return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+    }
 }

@@ -15,7 +15,7 @@ public class RefreshTokenServiceImp implements RefreshTokenService {
     private final UserDAO userDAO;
     private final long refreshTokenExpiration ;
 
-    public RefreshTokenServiceImp (RefreshTokenDAO refreshTokenDAO , UserDAO userDAO ,@Value("${REFRESH_TOKEN_EXPIRATION_TIME}") long refreshTokenExpiration){
+    public RefreshTokenServiceImp (RefreshTokenDAO refreshTokenDAO , UserDAO userDAO ,@Value("${JWT_EXPIRATION_TIME}")  long refreshTokenExpiration){
         this.refreshTokenDAO = refreshTokenDAO;
         this.userDAO = userDAO;
         this.refreshTokenExpiration = refreshTokenExpiration;
@@ -47,4 +47,6 @@ public class RefreshTokenServiceImp implements RefreshTokenService {
         }
         return false;
     }
+
+
 }

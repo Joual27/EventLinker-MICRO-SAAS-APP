@@ -8,4 +8,5 @@ import org.youcode.EventLinkerAPI.user.DTOs.AuthResponseDTO;
 public interface AuthService {
     AuthResponseDTO createUser(String userType , BaseRegistrationDTO data);
     AuthResponseDTO authenticate(LoginDTO credentials);
+    AuthResponseDTO refreshToken(String token);
 }
