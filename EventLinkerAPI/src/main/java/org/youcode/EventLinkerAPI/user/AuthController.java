@@ -24,14 +24,11 @@ public class AuthController {
         AuthResponseDTO res = authService.createUser(userType, req);
         return new ResponseEntity<>(new SuccessDTO<>("Success" , res.role()+ " created Successfully" , res) , HttpStatus.CREATED);
     }
+
     @PostMapping("/login")
     public ResponseEntity<SuccessDTO<AuthResponseDTO>> authenticate(@RequestBody @Valid LoginDTO req){
         AuthResponseDTO res = authService.authenticate(req);
         return new ResponseEntity<>(new SuccessDTO<>("Success" , "authenticated successfully !" , res) , HttpStatus.OK);
     }
-    @PostMapping("/refresh-token")
-    public ResponseEntity<AuthResponseDTO> refreshToken(@CookieValue(name = "refreshToken") String refreshToken){
-        AuthResponseDTO res = authService.refreshToken(refreshToken);
-        return new ResponseEntity<>(res , HttpStatus.OK);
-    }
+
 }

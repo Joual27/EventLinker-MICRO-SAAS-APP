@@ -1,6 +1,7 @@
 package org.youcode.EventLinkerAPI.shared.utils.exceptionHandling;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,5 +56,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDTO handleTokenExpiredException(TokenExpiredException e) {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorDTO handleBadCredentialsException(BadCredentialsException e) {
+        return new ErrorDTO(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), LocalDateTime.now());
     }
 }
