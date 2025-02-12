@@ -11,7 +11,7 @@ import org.youcode.EventLinkerAPI.shared.utils.factory.UserFactory;
 import org.youcode.EventLinkerAPI.shared.utils.interfaces.BaseRegistrationDTO;
 import org.youcode.EventLinkerAPI.shared.utils.security.JwtService;
 import org.youcode.EventLinkerAPI.user.DTOs.LoginDTO;
-import org.youcode.EventLinkerAPI.user.DTOs.UserResponseDTO;
+import org.youcode.EventLinkerAPI.user.DTOs.AuthResponseDTO;
 import org.youcode.EventLinkerAPI.user.interfaces.AuthService;
 
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class AuthServiceImp implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public UserResponseDTO createUser(String userType , BaseRegistrationDTO data) {
+    public AuthResponseDTO createUser(String userType , BaseRegistrationDTO data) {
         User userToCreate = userFactory.createUser(userType , data);
         userToCreate.setPassword(passwordEncoder.encode(userToCreate.getPassword()));
         User createdUser = userDAO.save(userToCreate);
@@ -35,16 +35,18 @@ public class AuthServiceImp implements AuthService {
                 createdUser.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
-        return new UserResponseDTO(createdUser.getId() , token , createdUser.getUserRole());
+        return new AuthResponseDTO(createdUser.getId() , token , createdUser.getUserRole());
     }
 
     @Override
-    public UserResponseDTO authenticate(LoginDTO credentials) {
+    public AuthResponseDTO authenticate(LoginDTO credentials) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(credentials.email() , credentials.password());
         Authentication auth = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String token = jwtService.generateToken(auth);
         User signedInUser = (User) auth.getPrincipal();
-        return new UserResponseDTO(signedInUser.getId() , token , signedInUser.getUserRole());
+        return new AuthResponseDTO(signedInUser.getId() , token , signedInUser.getUserRole());
     }
+
+
 }
