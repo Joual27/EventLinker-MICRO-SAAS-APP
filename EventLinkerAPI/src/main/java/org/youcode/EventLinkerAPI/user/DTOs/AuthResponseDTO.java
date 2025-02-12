@@ -1,4 +1,4 @@
 package org.youcode.EventLinkerAPI.user.DTOs;
 
-public record AuthResponseDTO(Long id , String token , String role) {
+public record AuthResponseDTO(Long id , AccessTokenResponseDTO tokens , String role) {
 }

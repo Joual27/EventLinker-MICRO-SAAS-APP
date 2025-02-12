@@ -30,8 +30,8 @@ public class AuthController {
         return new ResponseEntity<>(new SuccessDTO<>("Success" , "authenticated successfully !" , res) , HttpStatus.OK);
     }
     @PostMapping("/refresh-token")
-    public ResponseEntity<AccessTokenResponseDTO> refreshToken(@CookieValue(name = "refreshToken") String refreshToken){
-        AccessTokenResponseDTO res = authService.refreshToken(refreshToken);
+    public ResponseEntity<AuthResponseDTO> refreshToken(@CookieValue(name = "refreshToken") String refreshToken){
+        AuthResponseDTO res = authService.refreshToken(refreshToken);
         return new ResponseEntity<>(res , HttpStatus.OK);
     }
 }
