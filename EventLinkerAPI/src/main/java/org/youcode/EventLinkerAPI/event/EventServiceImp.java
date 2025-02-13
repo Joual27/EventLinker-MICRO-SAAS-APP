@@ -38,11 +38,9 @@ public class EventServiceImp implements EventService {
 
     @Override
     public EventResponseDTO updateEvent(CreateAndUpdateEventDTO data , Long id) {
-        Event eventToUpdate = getEventEntityById(id);
         Organizer eventOrganizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!eventToUpdate.getOrganizer().getId().equals(eventOrganizer.getId())){
-            throw new AccessDeniedException("You Can't Update An Event That Ain't Yours !");
-        }
+        Event eventToUpdate = getEventEntityById(id);
+        assertIsOrganizerEvent(eventToUpdate , "You can't Update an error that ain't Yours !");
         if (!isValidDate(data.date())){
             throw new IllegalArgumentException("Event date must be in the future !");
         }
@@ -63,21 +61,15 @@ public class EventServiceImp implements EventService {
 
     @Override
     public EventResponseDTO getEventById(Long id) {
-        Organizer eventOrganizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Event existingEvent = getEventEntityById(id);
-        if (!existingEvent.getOrganizer().getId().equals(eventOrganizer.getId())){
-            throw new AccessDeniedException("You Can't Get Data Of An Event That Ain't Yours !");
-        }
+        assertIsOrganizerEvent(existingEvent , "You Can't Get Data Of An Event That Ain't Yours !");
         return eventMapper.toResponseDTO(existingEvent);
     }
 
     @Override
     public EventResponseDTO deleteEvent(Long id) {
-        Organizer eventOrganizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Event existingEvent = getEventEntityById(id);
-        if (!existingEvent.getOrganizer().getId().equals(eventOrganizer.getId())){
-            throw new AccessDeniedException("You Can't Get Data Of An Event That Ain't Yours !");
-        }
+        assertIsOrganizerEvent(existingEvent , "You Can't Delete An Event That Ain't Yours !");
         eventDAO.deleteById(id);
         return eventMapper.toResponseDTO(existingEvent);
     }
@@ -90,4 +82,12 @@ public class EventServiceImp implements EventService {
         return eventDAO.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No Event Was Found With Given Id !"));
     }
+
+    private void assertIsOrganizerEvent(Event event , String message){
+        Organizer eventOrganizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!event.getOrganizer().getId().equals(eventOrganizer.getId())){
+            throw new AccessDeniedException(message);
+        }
+    }
 }
+
