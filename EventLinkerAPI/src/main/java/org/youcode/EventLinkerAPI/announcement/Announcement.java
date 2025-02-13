@@ -32,7 +32,4 @@ public class Announcement extends BaseEntity {
     @OneToMany(mappedBy = "announcement" , fetch = FetchType.EAGER)
     private List<Application> applications;
 
-    @ManyToOne
-    @JoinColumn(name = "WORKER_ID")
-    private Worker worker;
 }
