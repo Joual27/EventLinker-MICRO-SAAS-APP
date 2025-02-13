@@ -19,7 +19,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        ErrorDTO errorResponse = new ErrorDTO(HttpServletResponse.SC_FORBIDDEN ,"You dont have permission to access this resource !"  , LocalDateTime.now());
+        ErrorDTO errorResponse = new ErrorDTO(HttpServletResponse.SC_FORBIDDEN ,accessDeniedException.getMessage() , LocalDateTime.now());
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));

@@ -1,6 +1,7 @@
 package org.youcode.EventLinkerAPI.event;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.youcode.EventLinkerAPI.event.DTOs.CreateAndUpdateEventDTO;
 import org.youcode.EventLinkerAPI.event.DTOs.EventResponseDTO;
 import org.youcode.EventLinkerAPI.event.interfaces.EventService;
 import org.youcode.EventLinkerAPI.event.mapper.EventMapper;
+import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
 import org.youcode.EventLinkerAPI.organizer.Organizer;
 
 import java.time.LocalDateTime;
@@ -35,8 +37,20 @@ public class EventServiceImp implements EventService {
     }
 
     @Override
-    public EventResponseDTO updateEvent(CreateAndUpdateEventDTO data ) {
-        return null;
+    public EventResponseDTO updateEvent(CreateAndUpdateEventDTO data , Long id) {
+        Event eventToUpdate = getEventEntityById(id);
+        Organizer eventOrganizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!eventToUpdate.getOrganizer().getId().equals(eventOrganizer.getId())){
+            throw new AccessDeniedException("You Can't Update An Event That Ain't Yours !");
+        }
+        if (!isValidDate(data.date())){
+            throw new IllegalArgumentException("Event date must be in the future !");
+        }
+        Event event = eventMapper.toEntity(data);
+        event.setOrganizer(eventOrganizer);
+        event.setId(id);
+        Event updatedEvent = eventDAO.save(event);
+        return eventMapper.toResponseDTO(updatedEvent);
     }
 
     @Override
@@ -56,5 +70,10 @@ public class EventServiceImp implements EventService {
 
     private boolean isValidDate(LocalDateTime date){
         return date.isAfter(LocalDateTime.now());
+    }
+
+    private Event getEventEntityById(Long id){
+        return eventDAO.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No Event Was Found With Given Id !"));
     }
 }

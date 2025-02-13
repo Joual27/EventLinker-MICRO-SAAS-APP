@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EventService {
     EventResponseDTO saveEvent(CreateAndUpdateEventDTO data );
-    EventResponseDTO updateEvent(CreateAndUpdateEventDTO data);
+    EventResponseDTO updateEvent(CreateAndUpdateEventDTO data , Long id);
     List<EventResponseDTO> getAllEvents();
     EventResponseDTO getEventById(Long id);
     EventResponseDTO deleteEvent(Long id);
