@@ -1,10 +1,7 @@
 package org.youcode.EventLinkerAPI.announcement;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.youcode.EventLinkerAPI.AnnouncementSkill.AnnouncementSkill;
 import org.youcode.EventLinkerAPI.announcement.enums.AnnouncementStatus;
 import org.youcode.EventLinkerAPI.application.Application;
@@ -18,7 +15,8 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Announcement extends BaseEntity {
     private String title;
     private String description;
@@ -31,5 +29,6 @@ public class Announcement extends BaseEntity {
     private List<Application> applications;
 
     @OneToMany(fetch = FetchType.EAGER , mappedBy = "announcement" , cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Set<AnnouncementSkill> announcementSkills;
 }

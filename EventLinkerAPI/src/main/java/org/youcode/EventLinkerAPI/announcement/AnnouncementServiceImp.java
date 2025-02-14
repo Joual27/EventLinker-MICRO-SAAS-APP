@@ -7,8 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.AnnouncementSkill.AnnouncementSkill;
 import org.youcode.EventLinkerAPI.AnnouncementSkill.DTOs.AnnouncementSkillEmbeddedCreationalDTO;
+import org.youcode.EventLinkerAPI.AnnouncementSkill.embeddabales.AnnouncementSkillKey;
 import org.youcode.EventLinkerAPI.announcement.DTOs.AnnouncementResponseDTO;
 import org.youcode.EventLinkerAPI.announcement.DTOs.CreateAnnouncementDTO;
+import org.youcode.EventLinkerAPI.announcement.enums.AnnouncementStatus;
 import org.youcode.EventLinkerAPI.announcement.interfaces.AnnouncementService;
 import org.youcode.EventLinkerAPI.announcement.mapper.AnnouncementMapper;
 import org.youcode.EventLinkerAPI.event.Event;
@@ -18,6 +20,7 @@ import org.youcode.EventLinkerAPI.organizer.Organizer;
 import org.youcode.EventLinkerAPI.skill.Skill;
 import org.youcode.EventLinkerAPI.skill.SkillService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,6 +42,9 @@ public class AnnouncementServiceImp implements AnnouncementService {
         Announcement announcementToCreate = announcementMapper.toEntity(data);
         Set<AnnouncementSkill> announcementSkills = validateAndMapAnnouncementSkills(data.skills() , announcementToCreate);
         announcementToCreate.setAnnouncementSkills(announcementSkills);
+        announcementToCreate.setEvent(existingEvent);
+        announcementToCreate.setCreatedAt(LocalDateTime.now());
+        announcementToCreate.setStatus(AnnouncementStatus.PENDING);
         Announcement createdAnnouncement = announcementDAO.save(announcementToCreate);
         return announcementMapper.toResponseDTO(createdAnnouncement);
     }
@@ -75,6 +81,10 @@ public class AnnouncementServiceImp implements AnnouncementService {
                 .map(skill -> {
                     Skill existingSkill = skillService.getSkillEntityById(skill.id());
                     AnnouncementSkill announcementSkill = new AnnouncementSkill();
+                    AnnouncementSkillKey announcementSkillKey = new AnnouncementSkillKey();
+                    announcementSkillKey.setAnnouncementId(announcement.getId());
+                    announcementSkillKey.setSkillId(existingSkill.getId());
+                    announcementSkill.setId(announcementSkillKey);
                     announcementSkill.setAnnouncement(announcement);
                     announcementSkill.setSkill(existingSkill);
                     announcementSkill.setAcceptsNonOrganizations(skill.acceptsNonOrganizations());

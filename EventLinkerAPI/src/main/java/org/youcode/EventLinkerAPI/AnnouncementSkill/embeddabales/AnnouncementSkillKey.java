@@ -1,13 +1,12 @@
 package org.youcode.EventLinkerAPI.AnnouncementSkill.embeddabales;
 
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Embeddable
 public class AnnouncementSkillKey {
     Long skillId ;
