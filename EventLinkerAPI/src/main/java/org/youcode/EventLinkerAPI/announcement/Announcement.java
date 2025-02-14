@@ -28,7 +28,7 @@ public class Announcement extends BaseEntity {
     @OneToMany(mappedBy = "announcement" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<Application> applications;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "announcement" , cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER , mappedBy = "announcement" , cascade = CascadeType.ALL , orphanRemoval = true)
     @ToString.Exclude
     private Set<AnnouncementSkill> announcementSkills;
 }

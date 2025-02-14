@@ -10,12 +10,14 @@ import org.youcode.EventLinkerAPI.AnnouncementSkill.DTOs.AnnouncementSkillEmbedd
 import org.youcode.EventLinkerAPI.AnnouncementSkill.embeddabales.AnnouncementSkillKey;
 import org.youcode.EventLinkerAPI.announcement.DTOs.AnnouncementResponseDTO;
 import org.youcode.EventLinkerAPI.announcement.DTOs.CreateAnnouncementDTO;
+import org.youcode.EventLinkerAPI.announcement.DTOs.UpdateAnnouncementDTO;
 import org.youcode.EventLinkerAPI.announcement.enums.AnnouncementStatus;
 import org.youcode.EventLinkerAPI.announcement.interfaces.AnnouncementService;
 import org.youcode.EventLinkerAPI.announcement.mapper.AnnouncementMapper;
 import org.youcode.EventLinkerAPI.event.Event;
 import org.youcode.EventLinkerAPI.event.interfaces.EventService;
 
+import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
 import org.youcode.EventLinkerAPI.organizer.Organizer;
 import org.youcode.EventLinkerAPI.skill.Skill;
 import org.youcode.EventLinkerAPI.skill.SkillService;
@@ -50,12 +52,24 @@ public class AnnouncementServiceImp implements AnnouncementService {
     }
 
     @Override
-    public AnnouncementResponseDTO updateAnnouncement(CreateAnnouncementDTO data, Long id) {
-        return null;
+    public AnnouncementResponseDTO updateAnnouncement(UpdateAnnouncementDTO data, Long id) {
+        Announcement existingAnnouncement = getAnnouncementEntityById(id);
+        existingAnnouncement.getAnnouncementSkills().clear();
+        assertAnnouncementBelongsToOrganizer(existingAnnouncement.getEvent() , "You can Only Update Announcements Of your events !");
+        Announcement announcementToUpdate = announcementMapper.updateDTOToEntity(data);
+        Set<AnnouncementSkill> announcementSkills = validateAndMapAnnouncementSkills(data.skills() , announcementToUpdate);
+        announcementToUpdate.setAnnouncementSkills(announcementSkills);
+        announcementToUpdate.setId(existingAnnouncement.getId());
+        announcementToUpdate.setCreatedAt(existingAnnouncement.getCreatedAt());
+        announcementToUpdate.setStatus(existingAnnouncement.getStatus());
+        announcementToUpdate.setEvent(existingAnnouncement.getEvent());
+        Announcement updatedAnnouncement = announcementDAO.save(announcementToUpdate);
+        return announcementMapper.toResponseDTO(updatedAnnouncement);
     }
 
     @Override
     public AnnouncementResponseDTO getAllAnnouncements(int page, int size) {
+
         return null;
     }
 
@@ -67,6 +81,12 @@ public class AnnouncementServiceImp implements AnnouncementService {
     @Override
     public AnnouncementResponseDTO deleteAnnouncement(Long id) {
         return null;
+    }
+
+    @Override
+    public Announcement getAnnouncementEntityById(Long id) {
+        return announcementDAO.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No Announcement was found with given ID !"));
     }
 
     private void assertAnnouncementBelongsToOrganizer(Event event , String message){
@@ -91,4 +111,6 @@ public class AnnouncementServiceImp implements AnnouncementService {
                     return announcementSkill;
                 }).collect(Collectors.toSet());
     }
+
+
 }
