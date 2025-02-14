@@ -27,9 +27,9 @@ public class Announcement extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "EVENT_ID")
     private Event event ;
-    @OneToMany(mappedBy = "announcement" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "announcement" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     private List<Application> applications;
 
-    @OneToMany(fetch = FetchType.EAGER , mappedBy = "announcement")
+    @OneToMany(fetch = FetchType.EAGER , mappedBy = "announcement" , cascade = CascadeType.ALL)
     private Set<AnnouncementSkill> announcementSkills;
 }

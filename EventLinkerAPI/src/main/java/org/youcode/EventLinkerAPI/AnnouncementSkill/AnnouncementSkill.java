@@ -1,10 +1,16 @@
 package org.youcode.EventLinkerAPI.AnnouncementSkill;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.youcode.EventLinkerAPI.AnnouncementSkill.embeddabales.AnnouncementSkillKey;
 import org.youcode.EventLinkerAPI.announcement.Announcement;
 import org.youcode.EventLinkerAPI.skill.Skill;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 public class AnnouncementSkill {
     @EmbeddedId

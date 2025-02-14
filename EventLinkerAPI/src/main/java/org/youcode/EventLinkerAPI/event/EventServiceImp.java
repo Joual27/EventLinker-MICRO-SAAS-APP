@@ -78,7 +78,9 @@ public class EventServiceImp implements EventService {
         return date.isAfter(LocalDateTime.now());
     }
 
-    private Event getEventEntityById(Long id){
+
+    @Override
+    public Event getEventEntityById(Long id){
         return eventDAO.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No Event Was Found With Given Id !"));
     }

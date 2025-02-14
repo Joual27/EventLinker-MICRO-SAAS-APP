@@ -5,5 +5,5 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
-public record CreateAndUpdateAnnouncementDTO(@NotNull String title, @NotNull String description , @NotNull @Length(min = 1) List<Long> skills) {
+public record UpdateAnnouncementDTO(@NotNull String title, @NotNull String description , @NotNull @Length(min = 1) List<Long> skills) {
 }
