@@ -15,12 +15,12 @@ public class AnnouncementSkill {
     @EmbeddedId
     private AnnouncementSkillKey id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("announcementId")
     @JoinColumn(name = "announcement_id")
     private Announcement announcement;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("skillId")
     @JoinColumn(name = "skill_id")
     @ToString.Exclude
