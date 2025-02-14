@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
+import org.youcode.EventLinkerAPI.exceptions.MaxPendingAnnouncementsReached;
 import org.youcode.EventLinkerAPI.exceptions.TokenExpiredException;
 import org.youcode.EventLinkerAPI.shared.utils.DTOs.ErrorDTO;
 
@@ -68,5 +69,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleBadCredentialsException(BadCredentialsException e) {
         return new ErrorDTO(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(MaxPendingAnnouncementsReached.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorDTO handleMaxPendingAnnouncementsReached(MaxPendingAnnouncementsReached e) {
+        return new ErrorDTO(HttpStatus.CONFLICT.value(), e.getMessage(), LocalDateTime.now());
     }
 }

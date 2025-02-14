@@ -2,6 +2,8 @@ package org.youcode.EventLinkerAPI.announcement;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.youcode.EventLinkerAPI.event.Event;
 import org.youcode.EventLinkerAPI.event.interfaces.EventService;
 
 import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
+import org.youcode.EventLinkerAPI.exceptions.MaxPendingAnnouncementsReached;
 import org.youcode.EventLinkerAPI.organizer.Organizer;
 import org.youcode.EventLinkerAPI.skill.Skill;
 import org.youcode.EventLinkerAPI.skill.SkillService;
@@ -41,6 +44,7 @@ public class AnnouncementServiceImp implements AnnouncementService {
     public AnnouncementResponseDTO saveAnnouncement(CreateAnnouncementDTO data) {
         Event existingEvent = eventService.getEventEntityById(data.eventId());
         assertAnnouncementBelongsToOrganizer(existingEvent , "You can Only Create Announcements for your event !");
+        checkAnnouncementCreationPossibility(existingEvent);
         Announcement announcementToCreate = announcementMapper.toEntity(data);
         Set<AnnouncementSkill> announcementSkills = validateAndMapAnnouncementSkills(data.skills() , announcementToCreate);
         announcementToCreate.setAnnouncementSkills(announcementSkills);
@@ -68,19 +72,26 @@ public class AnnouncementServiceImp implements AnnouncementService {
     }
 
     @Override
-    public AnnouncementResponseDTO getAllAnnouncements(int page, int size) {
-
-        return null;
+    public Page<AnnouncementResponseDTO> getAllAnnouncements(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page,size);
+        Organizer authenticatedOrganizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Page<Announcement> announcements = announcementDAO.findByEvent_Organizer_Id(pageRequest , authenticatedOrganizer.getId());
+        return announcements.map(announcementMapper::toResponseDTO);
     }
 
     @Override
     public AnnouncementResponseDTO getAnnouncementById(Long id) {
-        return null;
+        Announcement existingAnnouncement = getAnnouncementEntityById(id);
+        assertAnnouncementBelongsToOrganizer(existingAnnouncement.getEvent() , "You can Only See Announcements Of your events !");
+        return announcementMapper.toResponseDTO(existingAnnouncement);
     }
 
     @Override
     public AnnouncementResponseDTO deleteAnnouncement(Long id) {
-        return null;
+        Announcement existingAnnouncement = getAnnouncementEntityById(id);
+        assertAnnouncementBelongsToOrganizer(existingAnnouncement.getEvent() , "You can Only Delete Your announcements !");
+        announcementDAO.delete(existingAnnouncement);
+        return announcementMapper.toResponseDTO(existingAnnouncement);
     }
 
     @Override
@@ -112,5 +123,15 @@ public class AnnouncementServiceImp implements AnnouncementService {
                 }).collect(Collectors.toSet());
     }
 
-
+    private void checkAnnouncementCreationPossibility(Event event){
+        int count = 0;
+        for (Announcement announcement : event.getAnnouncements()){
+            if (announcement.getStatus().equals(AnnouncementStatus.PENDING)){
+                count ++;
+            }
+        }
+        if (count >= 1){
+            throw new MaxPendingAnnouncementsReached("You already have a pending announcement for This event");
+        }
+    }
 }
