@@ -1,4 +1,6 @@
 package org.youcode.EventLinkerAPI.worker.DTOs;
 
-public record UpdateWorkerSkillsDTO() {
+import java.util.List;
+
+public record UpdateWorkerSkillsDTO(List<EmbeddedWorkerSkillsCreationalDTO> skills) {
 }

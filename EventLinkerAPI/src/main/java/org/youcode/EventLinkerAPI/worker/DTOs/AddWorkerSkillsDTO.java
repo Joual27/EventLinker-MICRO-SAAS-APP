@@ -1,4 +1,6 @@
 package org.youcode.EventLinkerAPI.worker.DTOs;
 
-public record AddWorkerSkillsDTO() {
+import java.util.List;
+
+public record AddWorkerSkillsDTO(Long workerId , List<EmbeddedWorkerSkillsCreationalDTO> skills) {
 }
