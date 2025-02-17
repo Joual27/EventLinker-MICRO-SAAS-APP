@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public abstract class UserMapper {
     public abstract Organizer toEntity(OrganizerRegistrationDTO dto);
     public abstract Worker toEntity(WorkerRegistrationDTO dto);
-
     protected LocalDateTime getDate(){
         return LocalDateTime.now();
     }
