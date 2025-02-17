@@ -1,10 +1,7 @@
 package org.youcode.EventLinkerAPI.worker;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.youcode.EventLinkerAPI.application.Application;
 import org.youcode.EventLinkerAPI.skill.Skill;
 import org.youcode.EventLinkerAPI.user.User;
@@ -21,11 +18,12 @@ public class Worker extends User {
     @OneToMany(mappedBy = "applicant" , fetch = FetchType.EAGER)
     private List<Application> applications;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL )
     @JoinTable(
             joinColumns = @JoinColumn(name = "WORKER_ID"),
             inverseJoinColumns = @JoinColumn(name = "SKILL_ID")
     )
+    @ToString.Exclude
     private List<Skill> skills;
 
     @Override
