@@ -7,10 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
-import org.youcode.EventLinkerAPI.exceptions.MaxPendingAnnouncementsReached;
-import org.youcode.EventLinkerAPI.exceptions.TokenExpiredException;
-import org.youcode.EventLinkerAPI.exceptions.UnacceptedAnnouncementStatusException;
+import org.youcode.EventLinkerAPI.exceptions.*;
 import org.youcode.EventLinkerAPI.shared.utils.DTOs.ErrorDTO;
 
 import java.time.LocalDateTime;
@@ -82,5 +79,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDTO handleUnacceptedAnnouncementStatusException(UnacceptedAnnouncementStatusException e) {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(PaymentProcessingException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErrorDTO handlePaymentProcessingException(PaymentProcessingException e) {
+        return new ErrorDTO(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage(), LocalDateTime.now());
     }
 }
