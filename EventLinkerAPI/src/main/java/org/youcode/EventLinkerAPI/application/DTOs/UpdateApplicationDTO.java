@@ -1,4 +1,6 @@
 package org.youcode.EventLinkerAPI.application.DTOs;
 
-public record UpdateApplicationDTO (String letter , double price) {
+import jakarta.validation.constraints.NotNull;
+
+public record UpdateApplicationDTO (@NotNull String letter , @NotNull double price) {
 }

@@ -9,5 +9,5 @@ import org.youcode.EventLinkerAPI.user.DTOs.EmbeddedUserDTO;
 
 import java.time.LocalDateTime;
 
-public record ApplicationResponseDTO(double price , ApplicationStatus status , LocalDateTime createdAt , String letter , EmbeddedAnnouncementDTO announcement , EmbeddedUserDTO applicant , @JsonInclude(JsonInclude.Include.NON_NULL) EmbeddedReviewDTO review , @JsonInclude(JsonInclude.Include.NON_NULL) EmbeddedPaymentDTO payment) {
+public record ApplicationResponseDTO(Long id  , double price , ApplicationStatus status , LocalDateTime createdAt , String letter , EmbeddedAnnouncementDTO announcement , EmbeddedUserDTO applicant , @JsonInclude(JsonInclude.Include.NON_NULL) EmbeddedReviewDTO review , @JsonInclude(JsonInclude.Include.NON_NULL) EmbeddedPaymentDTO payment) {
 }

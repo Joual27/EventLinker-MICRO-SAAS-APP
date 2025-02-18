@@ -2,26 +2,51 @@ package org.youcode.EventLinkerAPI.application;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.youcode.EventLinkerAPI.announcement.Announcement;
+import org.youcode.EventLinkerAPI.announcement.enums.AnnouncementStatus;
+import org.youcode.EventLinkerAPI.announcement.interfaces.AnnouncementService;
 import org.youcode.EventLinkerAPI.application.DTOs.ApplicationResponseDTO;
 import org.youcode.EventLinkerAPI.application.DTOs.CreateApplicationDTO;
 import org.youcode.EventLinkerAPI.application.DTOs.UpdateApplicationDTO;
+import org.youcode.EventLinkerAPI.application.enums.ApplicationStatus;
 import org.youcode.EventLinkerAPI.application.interfaces.ApplicationService;
+import org.youcode.EventLinkerAPI.application.mapper.ApplicationMapper;
+import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
+import org.youcode.EventLinkerAPI.exceptions.UnacceptedAnnouncementStatusException;
+import org.youcode.EventLinkerAPI.worker.Worker;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Service
 public class ApplicationServiceImp implements ApplicationService {
-
-
+    private final AnnouncementService announcementService;
+    private final ApplicationDAO applicationDAO;
+    private final ApplicationMapper applicationMapper;
 
     @Override
     public ApplicationResponseDTO saveApplication(CreateApplicationDTO data) {
-        return null;
+        Announcement existingAnnouncement = announcementService.getAnnouncementEntityById(data.announcementId());
+        assertAnnouncementIsPending(existingAnnouncement);
+        Worker applicant = (Worker) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Application applicationToCreate = applicationMapper.toEntity(data);
+        applicationToCreate.setAnnouncement(existingAnnouncement);
+        applicationToCreate.setApplicant(applicant);
+        applicationToCreate.setCreatedAt(LocalDateTime.now());
+        applicationToCreate.setStatus(ApplicationStatus.PENDING);
+        Application createdApplication = applicationDAO.save(applicationToCreate);
+        return applicationMapper.toResponseDTO(createdApplication);
     }
 
     @Override
     public ApplicationResponseDTO updateApplication(UpdateApplicationDTO data, Long id) {
-        return null;
+        Application existingApplication = getApplicationEntityById(id);
+        existingApplication.setLetter(data.letter());
+        existingApplication.setPrice(3000);
+        Application updatedApplication = applicationDAO.save(existingApplication);
+        return applicationMapper.toResponseDTO(updatedApplication);
     }
 
     @Override
@@ -37,5 +62,17 @@ public class ApplicationServiceImp implements ApplicationService {
     @Override
     public ApplicationResponseDTO deleteApplication(Long id) {
         return null;
+    }
+
+    @Override
+    public Application getApplicationEntityById(Long id){
+        return applicationDAO.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No Application Found with given ID ! "));
+    }
+
+    private void assertAnnouncementIsPending(Announcement announcement){
+        if (!announcement.getStatus().equals(AnnouncementStatus.ACTIVE)){
+            throw new UnacceptedAnnouncementStatusException("You can only apply for announcements with status 'Active' !");
+        }
     }
 }
