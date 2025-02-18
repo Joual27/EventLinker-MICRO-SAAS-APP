@@ -25,7 +25,7 @@ public class Application extends BaseEntity {
     private double price;
     private ApplicationStatus status;
     private LocalDateTime createdAt;
-
+    private String letter ;
     @ManyToOne
     @JoinColumn(name = "ANNOUNCEMENT_ID")
     private Announcement announcement;
