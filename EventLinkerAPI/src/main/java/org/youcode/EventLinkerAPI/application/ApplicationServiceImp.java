@@ -1,7 +1,10 @@
 package org.youcode.EventLinkerAPI.application;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.announcement.Announcement;
@@ -43,6 +46,7 @@ public class ApplicationServiceImp implements ApplicationService {
     @Override
     public ApplicationResponseDTO updateApplication(UpdateApplicationDTO data, Long id) {
         Application existingApplication = getApplicationEntityById(id);
+        assertIsWorkerApplication(existingApplication , "You can Only update ur owm applications !");
         existingApplication.setLetter(data.letter());
         existingApplication.setPrice(3000);
         Application updatedApplication = applicationDAO.save(existingApplication);
@@ -51,17 +55,27 @@ public class ApplicationServiceImp implements ApplicationService {
 
     @Override
     public Page<ApplicationResponseDTO> getAllApplications(int page, int size) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page , size);
+        Worker applicant = (Worker) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Page<Application> applications = applicationDAO.findAllByApplicant_Id(pageRequest , applicant.getId());
+        return applications.map(applicationMapper::toResponseDTO);
     }
 
     @Override
     public ApplicationResponseDTO getApplicationById(Long id) {
-        return null;
+        Application existingApplication = getApplicationEntityById(id);
+        assertIsWorkerApplication(existingApplication , "You can Only see ur own applications !");
+        return applicationMapper.toResponseDTO(existingApplication);
     }
 
+
+    @Transactional
     @Override
     public ApplicationResponseDTO deleteApplication(Long id) {
-        return null;
+        Application existingApplication = getApplicationEntityById(id);
+        assertIsWorkerApplication(existingApplication , "You can Only delete ur own applications !");
+        applicationDAO.delete(existingApplication);
+        return applicationMapper.toResponseDTO(existingApplication);
     }
 
     @Override
@@ -75,4 +89,12 @@ public class ApplicationServiceImp implements ApplicationService {
             throw new UnacceptedAnnouncementStatusException("You can only apply for announcements with status 'Active' !");
         }
     }
+
+    private void assertIsWorkerApplication(Application application , String message){
+        Worker applicant = (Worker) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!application.getApplicant().getId().equals(applicant.getId())){
+            throw new AccessDeniedException(message);
+        }
+    }
+
 }
