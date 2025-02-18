@@ -13,4 +13,5 @@ public interface AnnouncementService {
     AnnouncementResponseDTO getAnnouncementById(Long id);
     AnnouncementResponseDTO deleteAnnouncement(Long id);
     Announcement getAnnouncementEntityById(Long id);
+    AnnouncementResponseDTO updateAnnouncementStatus(String expectedOperation , Long id);
 }
