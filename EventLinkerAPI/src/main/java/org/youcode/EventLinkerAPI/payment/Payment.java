@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @Data
 public class Payment extends BaseEntity {
     private double amount ;
-    // to review later on
     private String status ;
     private LocalDateTime processedOn;
 

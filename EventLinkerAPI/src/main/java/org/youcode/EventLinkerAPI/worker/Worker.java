@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 public class Worker extends User {
     private boolean isOrganization;
-    @OneToMany(mappedBy = "applicant" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "applicant" , fetch = FetchType.EAGER , orphanRemoval = true)
     private List<Application> applications;
 
     @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL )
