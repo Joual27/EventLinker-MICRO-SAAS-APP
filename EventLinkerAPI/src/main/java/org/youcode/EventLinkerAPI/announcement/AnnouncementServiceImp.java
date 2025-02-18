@@ -100,6 +100,14 @@ public class AnnouncementServiceImp implements AnnouncementService {
                 .orElseThrow(() -> new EntityNotFoundException("No Announcement was found with given ID !"));
     }
 
+    @Override
+    public AnnouncementResponseDTO updateAnnouncementStatus(String expectedOperation , Long id){
+        Announcement existingAnnouncement = getAnnouncementEntityById(id);
+        Announcement announcementToUpdate = appendNewStatusToAnnouncement(existingAnnouncement , expectedOperation);
+        Announcement updatedAnnouncement = announcementDAO.save(announcementToUpdate);
+        return announcementMapper.toResponseDTO(updatedAnnouncement);
+    }
+
     private void assertAnnouncementBelongsToOrganizer(Event event , String message){
         Organizer organizer = (Organizer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!organizer.getId().equals(event.getOrganizer().getId())){
@@ -132,6 +140,20 @@ public class AnnouncementServiceImp implements AnnouncementService {
         }
         if (count >= 1){
             throw new MaxPendingAnnouncementsReached("You already have a pending announcement for This event");
+        }
+    }
+
+    private Announcement appendNewStatusToAnnouncement(Announcement announcement , String operation){
+        String lowerOperation = operation.toLowerCase();
+        switch (lowerOperation){
+            case "reject" :
+                announcement.setStatus(AnnouncementStatus.REFUSED);
+                return announcement;
+            case "accept" :
+                announcement.setStatus(AnnouncementStatus.ACTIVE);
+                return announcement;
+            default:
+                throw new IllegalArgumentException("Invalid announcement status");
         }
     }
 }

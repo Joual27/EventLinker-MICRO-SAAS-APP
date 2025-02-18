@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,12 +30,15 @@ public abstract class User implements UserDetails {
     private String password;
     private LocalDateTime createdAt;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "reviewer")
     private List<Review> writtenReviews;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "reviewee")
     private List<Review> receivedReviews;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "participants")
     private List<DM> dms;
 
