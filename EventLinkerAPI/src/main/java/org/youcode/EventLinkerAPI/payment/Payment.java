@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.youcode.EventLinkerAPI.application.Application;
+import org.youcode.EventLinkerAPI.payment.enums.PaymentStatus;
 import org.youcode.EventLinkerAPI.shared.utils.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @Data
 public class Payment extends BaseEntity {
     private double amount ;
-    private String status ;
+    private PaymentStatus status ;
     private LocalDateTime processedOn;
 
     @OneToOne(fetch = FetchType.EAGER)

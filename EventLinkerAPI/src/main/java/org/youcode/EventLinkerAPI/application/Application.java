@@ -1,9 +1,6 @@
 package org.youcode.EventLinkerAPI.application;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.youcode.EventLinkerAPI.announcement.Announcement;
 import org.youcode.EventLinkerAPI.application.enums.ApplicationStatus;
@@ -37,7 +34,7 @@ public class Application extends BaseEntity {
     @ToString.Exclude
     private Review review;
 
-    @OneToOne(mappedBy = "application")
+    @OneToOne(mappedBy = "application" , cascade = CascadeType.ALL)
     @ToString.Exclude
     private Payment payment;
 }

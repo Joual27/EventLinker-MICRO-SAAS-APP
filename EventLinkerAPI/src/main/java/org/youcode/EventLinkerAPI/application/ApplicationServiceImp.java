@@ -18,6 +18,7 @@ import org.youcode.EventLinkerAPI.application.interfaces.ApplicationService;
 import org.youcode.EventLinkerAPI.application.mapper.ApplicationMapper;
 import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
 import org.youcode.EventLinkerAPI.exceptions.UnacceptedAnnouncementStatusException;
+import org.youcode.EventLinkerAPI.exceptions.UnpayableApplicationStatusException;
 import org.youcode.EventLinkerAPI.worker.Worker;
 
 import java.time.LocalDateTime;
@@ -82,6 +83,13 @@ public class ApplicationServiceImp implements ApplicationService {
     public Application getApplicationEntityById(Long id){
         return applicationDAO.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No Application Found with given ID ! "));
+    }
+
+    @Override
+    public void verifyPayabilityOfApplication(Application application) {
+        if (!application.getStatus().equals(ApplicationStatus.ACCEPTED)){
+            throw new UnpayableApplicationStatusException("You can only pay accepted applications !");
+        }
     }
 
     private void assertAnnouncementIsPending(Announcement announcement){
