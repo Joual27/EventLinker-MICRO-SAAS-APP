@@ -1,9 +1,6 @@
 package org.youcode.EventLinkerAPI.application;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.youcode.EventLinkerAPI.announcement.Announcement;
 import org.youcode.EventLinkerAPI.application.enums.ApplicationStatus;
@@ -23,21 +20,21 @@ public class Application extends BaseEntity {
     private ApplicationStatus status;
     private LocalDateTime createdAt;
     private String letter ;
-    @ManyToOne
+    @ManyToOne(fetch =FetchType.EAGER)
     @ToString.Exclude
     @JoinColumn(name = "ANNOUNCEMENT_ID")
     private Announcement announcement;
 
-    @ManyToOne
+    @ManyToOne(fetch =FetchType.EAGER)
     @ToString.Exclude
-    @JoinColumn(name = "APPLICANT_ID")
+    @JoinColumn(name = "APPLICANT_ID" )
     private Worker applicant ;
 
     @OneToOne(mappedBy = "application")
     @ToString.Exclude
     private Review review;
 
-    @OneToOne(mappedBy = "application")
+    @OneToOne(mappedBy = "application" , cascade = CascadeType.ALL , fetch =FetchType.EAGER )
     @ToString.Exclude
     private Payment payment;
 }

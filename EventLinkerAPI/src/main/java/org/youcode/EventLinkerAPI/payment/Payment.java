@@ -20,10 +20,12 @@ import java.time.LocalDateTime;
 @Data
 public class Payment extends BaseEntity {
     private double amount ;
-    private String status ;
+    private String status;
     private LocalDateTime processedOn;
+    private String currency;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "APPLICATION_ID")
     private Application application;
+
 }

@@ -49,6 +49,13 @@ public class WorkerServiceImp implements WorkerService {
                 .orElseThrow(() -> new EntityNotFoundException("NO WORKER FOUND WITH GIVEN ID !"));
     }
 
+    @Override
+    public Worker updateWorkerBalance(Worker worker, double amount) {
+        double newBalance = worker.getBalance() + amount;
+        worker.setBalance(newBalance);
+        return workerDAO.save(worker);
+    }
+
     private void verifyWorkerIdentity(Worker worker ,String message){
         Worker signedInWorker = (Worker) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!worker.getId().equals(signedInWorker.getId())){

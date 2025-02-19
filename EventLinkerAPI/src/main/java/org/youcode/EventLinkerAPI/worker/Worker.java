@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 public class Worker extends User {
     private boolean isOrganization;
+    private double balance;
     @OneToMany(mappedBy = "applicant" , fetch = FetchType.EAGER , orphanRemoval = true)
     private List<Application> applications;
 

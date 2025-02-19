@@ -9,4 +9,5 @@ public interface WorkerService {
     WorkerSkillsResponseDTO removeWorkerSkill(Long workerId , Long skillId);
     WorkerSkillsResponseDTO updateWorkerSkills(UpdateWorkerSkillsDTO data , Long workerId);
     Worker getWorkerEntityById(Long id);
+    Worker updateWorkerBalance(Worker worker , double amount);
 }
