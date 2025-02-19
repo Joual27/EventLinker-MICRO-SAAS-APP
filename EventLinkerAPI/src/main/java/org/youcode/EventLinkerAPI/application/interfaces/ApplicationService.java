@@ -14,4 +14,5 @@ public interface ApplicationService {
     ApplicationResponseDTO deleteApplication(Long id);
     Application getApplicationEntityById(Long id);
     void verifyPayabilityOfApplication(Application application);
+    ApplicationResponseDTO getApplicationWithUpdatedStatus(Application application);
 }

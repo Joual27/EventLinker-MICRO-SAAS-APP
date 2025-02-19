@@ -92,6 +92,12 @@ public class ApplicationServiceImp implements ApplicationService {
         }
     }
 
+    @Override
+    public ApplicationResponseDTO getApplicationWithUpdatedStatus(Application application) {
+        Application updatedApplication = applicationDAO.save(application);
+        return applicationMapper.toResponseDTO(updatedApplication);
+    }
+
     private void assertAnnouncementIsPending(Announcement announcement){
         if (!announcement.getStatus().equals(AnnouncementStatus.ACTIVE)){
             throw new UnacceptedAnnouncementStatusException("You can only apply for announcements with status 'Active' !");

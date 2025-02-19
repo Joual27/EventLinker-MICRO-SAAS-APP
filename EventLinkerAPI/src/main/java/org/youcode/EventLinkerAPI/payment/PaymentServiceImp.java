@@ -14,7 +14,6 @@ import org.youcode.EventLinkerAPI.exceptions.ApplicationAlreadyHasPaymentExcepti
 import org.youcode.EventLinkerAPI.exceptions.PaymentProcessingException;
 import org.youcode.EventLinkerAPI.payment.DTOs.CreatePaymentIntentDTO;
 import org.youcode.EventLinkerAPI.payment.DTOs.PaymentResponseDTO;
-import org.youcode.EventLinkerAPI.payment.enums.PaymentStatus;
 import org.youcode.EventLinkerAPI.payment.interfaces.PaymentService;
 
 import java.time.LocalDateTime;
@@ -48,7 +47,7 @@ public class PaymentServiceImp implements PaymentService {
         }
         try{
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount((long) data.amount() * 100)
+                    .setAmount((long) existingApplication.getPrice() * 100)
                     .setCurrency(defaultCurrency)
                     .setPaymentMethod(data.paymentMethodId())
                     .setTransferGroup("APPLICATION_"+data.applicationId())
@@ -57,9 +56,10 @@ public class PaymentServiceImp implements PaymentService {
                     .build();
             PaymentIntent createdPaymentIntent = PaymentIntent.create(params);
             Payment paymentToCreate = mapDataToPayment(data , existingApplication);
+            paymentToCreate.setStatus(createdPaymentIntent.getStatus());
             Payment createdPayment = paymentDAO.save(paymentToCreate);
             if (!"succeeded".equals(createdPaymentIntent.getStatus())){
-                throw new PaymentProcessingException("Payment was not captured immediately. Status: " + createdPaymentIntent.getStatus());
+                throw new PaymentProcessingException("Payment was not captured with Status: " + createdPaymentIntent.getStatus());
             }
             return new PaymentResponseDTO(createdPaymentIntent.getClientSecret() , createdPaymentIntent.getId() , createdPayment.getAmount() , createdPayment.getCurrency() , createdPayment.getProcessedOn() , createdPayment.getStatus());
         }catch (StripeException e){
@@ -69,9 +69,8 @@ public class PaymentServiceImp implements PaymentService {
 
     private Payment mapDataToPayment(CreatePaymentIntentDTO data, Application application){
         Payment paymentToCreate = new Payment();
-        paymentToCreate.setAmount(data.amount());
-        paymentToCreate.setStatus(PaymentStatus.IN_ESCROW);
-        paymentToCreate.setCurrency(data.currency());
+        paymentToCreate.setAmount(application.getPrice());
+        paymentToCreate.setCurrency(defaultCurrency);
         paymentToCreate.setProcessedOn(LocalDateTime.now());
         paymentToCreate.setApplication(application);
         return paymentToCreate;
@@ -83,6 +82,5 @@ public class PaymentServiceImp implements PaymentService {
         }
         return false;
     }
-
 
 }

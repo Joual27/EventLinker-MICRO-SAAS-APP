@@ -24,14 +24,17 @@ public class OrganizerServiceImp implements OrganizerService {
     @Override
     public ApplicationResponseDTO updateApplicationStatus(String action, Long applicationId) {
         Application existingApplication = applicationService.getApplicationEntityById(applicationId);
-
-        return null;
+        Application updatedApplication = updateApplicationStatusBasedOnAction(existingApplication , action);
+        return applicationService.getApplicationWithUpdatedStatus(updatedApplication);
     }
 
     private Application updateApplicationStatusBasedOnAction(Application application , String action){
         switch (action){
             case "accept" :
                 application.setStatus(ApplicationStatus.ACCEPTED);
+                return application;
+            case "confirm":
+                application.setStatus(ApplicationStatus.CONFIRMED);
                 return application;
             case "reject" :
                 application.setStatus(ApplicationStatus.REFUSED);
