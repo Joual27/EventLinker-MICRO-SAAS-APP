@@ -20,7 +20,7 @@ import org.youcode.EventLinkerAPI.shared.utils.DTOs.SuccessDTO;
 public class PaymentController {
       private final PaymentService paymentService;
 
-      @PostMapping
+      @PostMapping("/create-intent")
       public ResponseEntity<SuccessDTO<PaymentResponseDTO>> createPaymentIntent(@RequestBody @Valid CreatePaymentIntentDTO req){
           PaymentResponseDTO res = paymentService.createPaymentIntent(req);
           return new ResponseEntity<>(new SuccessDTO<>("success " , "Payment Intent Created Successfully !" , res ) , HttpStatus.CREATED);

@@ -86,4 +86,22 @@ public class GlobalExceptionHandler {
     public ErrorDTO handlePaymentProcessingException(PaymentProcessingException e) {
         return new ErrorDTO(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(UnpayableApplicationStatusException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleUnpayableApplicationStatusException(UnpayableApplicationStatusException e) {
+        return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(ApplicationAlreadyHasPaymentException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErrorDTO handleApplicationAlreadyHasPaymentException(ApplicationAlreadyHasPaymentException e) {
+        return new ErrorDTO(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(UnsupportedActionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleUnsupportedActionException(UnsupportedActionException e) {
+        return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+    }
 }
