@@ -23,8 +23,10 @@ public class Payment extends BaseEntity {
     private double amount ;
     private PaymentStatus status ;
     private LocalDateTime processedOn;
+    private String currency;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "APPLICATION_ID")
     private Application application;
+
 }

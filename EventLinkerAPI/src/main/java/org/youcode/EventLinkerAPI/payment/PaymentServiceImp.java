@@ -12,7 +12,11 @@ import org.youcode.EventLinkerAPI.application.interfaces.ApplicationService;
 import org.youcode.EventLinkerAPI.exceptions.PaymentProcessingException;
 import org.youcode.EventLinkerAPI.payment.DTOs.ConfirmPaymentIntentDTO;
 import org.youcode.EventLinkerAPI.payment.DTOs.CreatePaymentIntentDTO;
+import org.youcode.EventLinkerAPI.payment.DTOs.PaymentResponseDTO;
+import org.youcode.EventLinkerAPI.payment.enums.PaymentStatus;
 import org.youcode.EventLinkerAPI.payment.interfaces.PaymentService;
+
+import java.time.LocalDateTime;
 
 
 @Service
@@ -20,11 +24,13 @@ public class PaymentServiceImp implements PaymentService {
     private final String stripeApiKey;
     private final String defaultCurrency;
     private final ApplicationService applicationService;
+    private final PaymentDAO paymentDAO;
 
-    public PaymentServiceImp(@Value("${STRIPE_API_KEY}") String stripeApiKey ,@Value("${DEFAULT_CURRENCY}") String defaultCurrency , ApplicationService applicationService){
+    public PaymentServiceImp(@Value("${STRIPE_API_KEY}") String stripeApiKey ,@Value("${DEFAULT_CURRENCY}") String defaultCurrency , ApplicationService applicationService , PaymentDAO paymentDAO){
         this.stripeApiKey = stripeApiKey;
         this.defaultCurrency = defaultCurrency;
         this.applicationService = applicationService;
+        this.paymentDAO = paymentDAO;
     }
 
     @PostConstruct
@@ -33,7 +39,7 @@ public class PaymentServiceImp implements PaymentService {
     }
 
     @Override
-    public PaymentIntent createPaymentIntent(CreatePaymentIntentDTO data) {
+    public PaymentResponseDTO createPaymentIntent(CreatePaymentIntentDTO data) {
         Application existingApplication = applicationService.getApplicationEntityById(data.applicationId());
         applicationService.verifyPayabilityOfApplication(existingApplication);
         try{
@@ -44,7 +50,10 @@ public class PaymentServiceImp implements PaymentService {
                     .setTransferGroup("APPLICATION_"+data.applicationId())
                     .setCaptureMethod(PaymentIntentCreateParams.CaptureMethod.MANUAL)
                     .build();
-            return PaymentIntent.create(params);
+            PaymentIntent createPaymentIntent = PaymentIntent.create(params);
+            Payment paymentToCreate = mapDataToPayment(data , existingApplication);
+            Payment createdPayment = paymentDAO.save(paymentToCreate);
+            return new PaymentResponseDTO(createPaymentIntent.getClientSecret() , createPaymentIntent.getId() , createdPayment.getAmount() , createdPayment.getCurrency() , createdPayment.getProcessedOn() , createdPayment.getStatus());
         }catch (Exception e){
             throw new PaymentProcessingException("Some error occurred while we tried creating an intent !");
         }
@@ -58,5 +67,15 @@ public class PaymentServiceImp implements PaymentService {
         }catch (Exception e){
             throw new PaymentProcessingException("Couldn't confirm Payment !");
         }
+    }
+
+    private Payment mapDataToPayment(CreatePaymentIntentDTO data, Application application){
+        Payment paymentToCreate = new Payment();
+        paymentToCreate.setAmount(data.amount());
+        paymentToCreate.setStatus(PaymentStatus.IN_ESCROW);
+        paymentToCreate.setCurrency(data.currency());
+        paymentToCreate.setProcessedOn(LocalDateTime.now());
+        paymentToCreate.setApplication(application);
+        return paymentToCreate;
     }
 }
