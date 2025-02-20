@@ -69,20 +69,7 @@ public class PaymentServiceImp implements PaymentService {
         }
     }
 
-    @Override
-    public Payout createPayout(String cardToken , Long amount , String payoutMode) {
-        try{
-            PayoutCreateParams params = PayoutCreateParams.builder()
-                    .setAmount(amount)
-                    .setCurrency(defaultCurrency)
-                    .setDestination(cardToken)
-                    .setMethod(getRequestedPaymentMethod(payoutMode.toLowerCase()))
-                    .build();
-            return Payout.create(params);
-        }catch (StripeException e){
-            throw new PaymentProcessingException(e.getMessage());
-        }
-    }
+
 
     private Payment mapDataToPayment(CreatePaymentIntentDTO data, Application application){
         Payment paymentToCreate = new Payment();
@@ -100,11 +87,6 @@ public class PaymentServiceImp implements PaymentService {
         return false;
     }
 
-    private PayoutCreateParams.Method getRequestedPaymentMethod(String payoutMode){
-        if (payoutMode.equals("instant")){
-            return PayoutCreateParams.Method.INSTANT;
-        }
-        return PayoutCreateParams.Method.STANDARD;
-    }
+
 
 }

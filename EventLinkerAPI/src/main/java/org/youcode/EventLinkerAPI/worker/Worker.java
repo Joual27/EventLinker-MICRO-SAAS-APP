@@ -5,6 +5,7 @@ import lombok.*;
 import org.youcode.EventLinkerAPI.application.Application;
 import org.youcode.EventLinkerAPI.skill.Skill;
 import org.youcode.EventLinkerAPI.user.User;
+import org.youcode.EventLinkerAPI.withdrawals.Withdrawal;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class Worker extends User {
     )
     @ToString.Exclude
     private List<Skill> skills;
+
+    @OneToMany(mappedBy = "worker")
+    private List<Withdrawal> withdrawals;
 
     @Override
     protected String getUserRole() {
