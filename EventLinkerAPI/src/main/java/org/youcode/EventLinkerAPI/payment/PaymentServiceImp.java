@@ -3,7 +3,9 @@ package org.youcode.EventLinkerAPI.payment;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.Payout;
 import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.PayoutCreateParams;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +69,21 @@ public class PaymentServiceImp implements PaymentService {
         }
     }
 
+    @Override
+    public Payout createPayout(String cardToken , Long amount , String payoutMode) {
+        try{
+            PayoutCreateParams params = PayoutCreateParams.builder()
+                    .setAmount(amount)
+                    .setCurrency(defaultCurrency)
+                    .setDestination(cardToken)
+                    .setMethod(getRequestedPaymentMethod(payoutMode.toLowerCase()))
+                    .build();
+            return Payout.create(params);
+        }catch (StripeException e){
+            throw new PaymentProcessingException(e.getMessage());
+        }
+    }
+
     private Payment mapDataToPayment(CreatePaymentIntentDTO data, Application application){
         Payment paymentToCreate = new Payment();
         paymentToCreate.setAmount(application.getPrice());
@@ -81,6 +98,13 @@ public class PaymentServiceImp implements PaymentService {
             return true;
         }
         return false;
+    }
+
+    private PayoutCreateParams.Method getRequestedPaymentMethod(String payoutMode){
+        if (payoutMode.equals("instant")){
+            return PayoutCreateParams.Method.INSTANT;
+        }
+        return PayoutCreateParams.Method.STANDARD;
     }
 
 }

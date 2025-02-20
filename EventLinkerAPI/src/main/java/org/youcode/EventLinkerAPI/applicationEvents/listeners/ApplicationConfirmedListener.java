@@ -19,5 +19,4 @@ public class ApplicationConfirmedListener {
         double amount = event.getAmount();
         workerService.updateWorkerBalance(application.getApplicant() , amount);
     }
-
 }
