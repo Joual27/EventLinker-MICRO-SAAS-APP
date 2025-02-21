@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.youcode.EventLinkerAPI.DM.DM;
+import org.youcode.EventLinkerAPI.message.Message;
 import org.youcode.EventLinkerAPI.review.Review;
 
 import java.time.LocalDateTime;
@@ -38,9 +39,9 @@ public abstract class User implements UserDetails {
     @OneToMany(mappedBy = "reviewee")
     private List<Review> receivedReviews;
 
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "participants")
-    private List<DM> dms;
+
+    @OneToMany(mappedBy = "user")
+    private List<Message> messages;
 
     @Override
     public List<GrantedAuthority> getAuthorities() {

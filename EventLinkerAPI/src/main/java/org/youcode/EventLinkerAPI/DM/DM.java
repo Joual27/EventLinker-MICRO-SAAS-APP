@@ -17,13 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class DM extends BaseEntity {
-    @ManyToMany
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "DM_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PARTCIPANT_ID")
-    )
-    private List<User> participants;
-
-    @OneToMany(mappedBy = "dm" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "dm")
     private List<Message> messages;
 }
