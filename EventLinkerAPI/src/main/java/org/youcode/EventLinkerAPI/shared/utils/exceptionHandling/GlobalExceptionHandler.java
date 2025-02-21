@@ -104,4 +104,10 @@ public class GlobalExceptionHandler {
     public ErrorDTO handleUnsupportedActionException(UnsupportedActionException e) {
         return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErrorDTO handleInsufficientBalanceException(InsufficientBalanceException e) {
+        return new ErrorDTO(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage(), LocalDateTime.now());
+    }
 }

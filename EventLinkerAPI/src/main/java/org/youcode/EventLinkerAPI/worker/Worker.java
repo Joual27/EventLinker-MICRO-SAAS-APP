@@ -5,6 +5,7 @@ import lombok.*;
 import org.youcode.EventLinkerAPI.application.Application;
 import org.youcode.EventLinkerAPI.skill.Skill;
 import org.youcode.EventLinkerAPI.user.User;
+import org.youcode.EventLinkerAPI.withdrawals.Withdrawal;
 
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class Worker extends User {
     )
     @ToString.Exclude
     private List<Skill> skills;
+    private String stripeAccountId;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "worker")
+    private List<Withdrawal> withdrawals;
 
     @Override
     protected String getUserRole() {

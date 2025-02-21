@@ -3,7 +3,9 @@ package org.youcode.EventLinkerAPI.payment;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
+import com.stripe.model.Payout;
 import com.stripe.param.PaymentIntentCreateParams;
+import com.stripe.param.PayoutCreateParams;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +54,7 @@ public class PaymentServiceImp implements PaymentService {
                     .setPaymentMethod(data.paymentMethodId())
                     .setTransferGroup("APPLICATION_"+data.applicationId())
                     .setConfirm(true)
-                    .setReturnUrl("http://localhost:8080/api/v1/organizer/applications/accept/"+existingApplication.getId())
+                    .setReturnUrl("https://facebook.com")
                     .build();
             PaymentIntent createdPaymentIntent = PaymentIntent.create(params);
             Payment paymentToCreate = mapDataToPayment(data , existingApplication);
@@ -66,6 +68,8 @@ public class PaymentServiceImp implements PaymentService {
             throw new PaymentProcessingException(e.getMessage());
         }
     }
+
+
 
     private Payment mapDataToPayment(CreatePaymentIntentDTO data, Application application){
         Payment paymentToCreate = new Payment();
@@ -82,5 +86,7 @@ public class PaymentServiceImp implements PaymentService {
         }
         return false;
     }
+
+
 
 }
