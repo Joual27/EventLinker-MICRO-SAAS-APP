@@ -27,7 +27,8 @@ public class Worker extends User {
     )
     @ToString.Exclude
     private List<Skill> skills;
-
+    private String stripeAccountId;
+    @ToString.Exclude
     @OneToMany(mappedBy = "worker")
     private List<Withdrawal> withdrawals;
 

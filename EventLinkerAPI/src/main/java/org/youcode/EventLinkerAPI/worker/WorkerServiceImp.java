@@ -56,6 +56,19 @@ public class WorkerServiceImp implements WorkerService {
         return workerDAO.save(worker);
     }
 
+    @Override
+    public Worker updateWorkerStripeId( Worker worker , String stripeId){
+        worker.setStripeAccountId(stripeId);
+        return workerDAO.save(worker);
+    }
+
+    @Override
+    public Worker postWithdrawalBalanceUpdate(Worker worker , Long amount){
+        double newBalance = worker.getBalance() - amount;
+        worker.setBalance(newBalance);
+        return workerDAO.save(worker);
+    }
+
     private void verifyWorkerIdentity(Worker worker ,String message){
         Worker signedInWorker = (Worker) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!worker.getId().equals(signedInWorker.getId())){

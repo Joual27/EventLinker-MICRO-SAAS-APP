@@ -54,7 +54,7 @@ public class PaymentServiceImp implements PaymentService {
                     .setPaymentMethod(data.paymentMethodId())
                     .setTransferGroup("APPLICATION_"+data.applicationId())
                     .setConfirm(true)
-                    .setReturnUrl("http://localhost:8080/api/v1/organizer/applications/accept/"+existingApplication.getId())
+                    .setReturnUrl("https://facebook.com")
                     .build();
             PaymentIntent createdPaymentIntent = PaymentIntent.create(params);
             Payment paymentToCreate = mapDataToPayment(data , existingApplication);
