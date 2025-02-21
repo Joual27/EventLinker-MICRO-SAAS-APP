@@ -1,27 +1,36 @@
 package org.youcode.EventLinkerAPI.message;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.youcode.EventLinkerAPI.DM.DM;
-import org.youcode.EventLinkerAPI.shared.utils.BaseEntity;
+import org.youcode.EventLinkerAPI.message.embeddabales.MessageKey;
+import org.youcode.EventLinkerAPI.user.User;
 
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Message extends BaseEntity {
-    private String content ;
-    private LocalDateTime sentAt;
+public class Message {
+    @EmbeddedId
+    private MessageKey id;
 
     @ManyToOne
+    @MapsId("dmId")
     @JoinColumn(name = "DM_ID")
     private DM dm;
+
+    @ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    private LocalDateTime sentAt;
+    private LocalDateTime seenAt;
+    private String content ;
+
 }
