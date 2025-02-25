@@ -30,7 +30,8 @@ public class Message {
     private User user;
 
     private LocalDateTime sentAt;
+    private boolean delivered;
+    private LocalDateTime deliveredAt;
     private LocalDateTime seenAt;
     private String content ;
-
 }
