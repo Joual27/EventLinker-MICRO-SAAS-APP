@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  app:
+    image: "event_linker_back_end"
+    build:
+      context: .
+    container_name: "event_linker_back_end"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${DEFAULT_ACTIVE_PROFILE}
+      - SPRING_DATASOURCE_URL=${APP_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_AUTH_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_AUTH_PASSWORD}
+    networks:
+      - app-network
+  db:
+    image: "postgres:latest"
+    container_name: event_linker_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_AUTH_USERNAME}
+      - POSTGRES_PASSWORD=${DB_AUTH_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+volumes:
+  pg-data:
+
+networks:
+  app-network: {}
