@@ -3,9 +3,7 @@ package org.youcode.EventLinkerAPI.payment;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
-import com.stripe.model.Payout;
 import com.stripe.param.PaymentIntentCreateParams;
-import com.stripe.param.PayoutCreateParams;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -68,7 +66,6 @@ public class PaymentServiceImp implements PaymentService {
             throw new PaymentProcessingException(e.getMessage());
         }
     }
-
 
 
     private Payment mapDataToPayment(CreatePaymentIntentDTO data, Application application){
