@@ -4,5 +4,5 @@ import org.youcode.EventLinkerAPI.message.DTOs.MessageResponseDTO;
 import org.youcode.EventLinkerAPI.message.DTOs.SendMessageDTO;
 
 public interface ProducerService {
-    MessageResponseDTO produceMessage(SendMessageDTO data);
+    MessageResponseDTO sendMessage(SendMessageDTO data);
 }

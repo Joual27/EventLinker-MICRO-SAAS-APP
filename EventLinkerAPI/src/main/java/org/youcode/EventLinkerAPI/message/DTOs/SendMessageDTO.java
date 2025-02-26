@@ -1,4 +1,6 @@
 package org.youcode.EventLinkerAPI.message.DTOs;
 
-public record SendMessageDTO(Long dmId , Long userId , String content) {
+import jakarta.validation.constraints.NotNull;
+
+public record SendMessageDTO(@NotNull Long dmId ,@NotNull String content) {
 }
