@@ -1,4 +1,4 @@
-package org.youcode.EventLinkerAPI.config;
+package org.youcode.EventLinkerAPI.config.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

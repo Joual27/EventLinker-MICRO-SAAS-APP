@@ -15,6 +15,7 @@ import org.youcode.EventLinkerAPI.review.Review;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
@@ -39,6 +40,9 @@ public abstract class User implements UserDetails {
     @OneToMany(mappedBy = "reviewee")
     private List<Review> receivedReviews;
 
+
+    @ManyToMany(mappedBy = "users")
+    private Set<DM> dms;
 
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
