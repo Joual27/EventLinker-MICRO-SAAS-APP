@@ -20,7 +20,6 @@ public class ConsumerServiceImp implements ConsumerService {
 
     @Override
     public void processMessage(Message message) {
-        messageDAO.save(message);
         User recipient = getMessageRecipient(message);
         if (recipientIsOnline(recipient.getId())){
             sendThroughSockets(message , message.getDm());

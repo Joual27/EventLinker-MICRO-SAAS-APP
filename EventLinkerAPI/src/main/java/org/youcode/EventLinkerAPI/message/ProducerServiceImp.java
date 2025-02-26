@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 @Service
 public class ProducerServiceImp implements ProducerService {
 
+    private final MessageDAO messageDAO;
     private final DMService dmService;
     private final MessageMapper messageMapper;
     private final KafkaTemplate<String , Message> kafkaTemplate;
@@ -33,8 +34,9 @@ public class ProducerServiceImp implements ProducerService {
         }
         Message messageToSend = messageMapper.toEntity(data);
         Message messageWithData = fillMessageDefaultData(messageToSend , user);
-        kafkaTemplate.send("direct-messages" , messageToSend.getDm().getId().toString() , messageWithData);
-        return messageMapper.toResponseDTO(messageWithData);
+        Message createdMessage = messageDAO.save(messageWithData);
+        kafkaTemplate.send("direct-messages" , messageToSend.getDm().getId().toString() , createdMessage);
+        return messageMapper.toResponseDTO(createdMessage);
     }
 
     private Message fillMessageDefaultData(Message message , User user){
