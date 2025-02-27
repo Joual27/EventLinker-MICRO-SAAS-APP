@@ -3,6 +3,7 @@ package org.youcode.EventLinkerAPI.message;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.DM.DM;
@@ -28,7 +29,8 @@ public class ProducerServiceImp implements ProducerService {
 
     @Override
     public MessageResponseDTO sendMessage(SendMessageDTO data , Principal principal) {
-        User user = (User) principal;
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) principal;
+        User user = (User) usernamePasswordAuthenticationToken.getPrincipal();
         DM existingDm = dmService.getDMEntityById(data.dmId());
         if (!isUserDM(existingDm , user)){
             throw new AccessDeniedException("You 't belong to this DM !");
