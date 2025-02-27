@@ -24,7 +24,7 @@ public class KafkaTopicConfig {
     public NewTopic directMessagesTopic(){
         return TopicBuilder.name("direct-messages")
                 .partitions(5)
-                .replicas(3)
+                .replicas(1)
                 .config(TopicConfig.RETENTION_MS_CONFIG , "604800000")
                 .build();
     }
@@ -33,6 +33,7 @@ public class KafkaTopicConfig {
     public AdminClient adminClient(){
         Properties config = new Properties();
         config.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG , bootstrapServers);
+        config.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "5000");
         return AdminClient.create(config);
     }
 

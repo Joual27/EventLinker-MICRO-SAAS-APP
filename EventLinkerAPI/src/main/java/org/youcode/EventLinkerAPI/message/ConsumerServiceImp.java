@@ -2,6 +2,7 @@ package org.youcode.EventLinkerAPI.message;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.DM.DM;
@@ -18,6 +19,7 @@ public class ConsumerServiceImp implements ConsumerService {
     private final RedisTemplate<String , String> redisTemplate;
     private final MessageDAO messageDAO;
 
+    @KafkaListener(topics = "direct-messages" , groupId = "message-group")
     @Override
     public void processMessage(Message message) {
         User recipient = getMessageRecipient(message);

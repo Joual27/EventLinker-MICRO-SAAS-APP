@@ -3,6 +3,7 @@ package org.youcode.EventLinkerAPI.message;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.DM.DM;
@@ -13,6 +14,7 @@ import org.youcode.EventLinkerAPI.message.interfaces.ProducerService;
 import org.youcode.EventLinkerAPI.message.mapper.MessageMapper;
 import org.youcode.EventLinkerAPI.user.User;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 
@@ -26,8 +28,9 @@ public class ProducerServiceImp implements ProducerService {
     private final KafkaTemplate<String , Message> kafkaTemplate;
 
     @Override
-    public MessageResponseDTO sendMessage(SendMessageDTO data) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public MessageResponseDTO sendMessage(SendMessageDTO data , Principal principal) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) principal;
+        User user = (User) usernamePasswordAuthenticationToken.getPrincipal();
         DM existingDm = dmService.getDMEntityById(data.dmId());
         if (!isUserDM(existingDm , user)){
             throw new AccessDeniedException("You 't belong to this DM !");
@@ -46,7 +49,12 @@ public class ProducerServiceImp implements ProducerService {
         return message;
     }
 
-    private boolean isUserDM(DM dm , User user){
-        return dm.getUsers().contains(user);
+    private boolean isUserDM(DM dm, User user) {
+
+        System.out.println( " IM IM LOGGED USER" + user.getId());
+        System.out.println("LENGTH" + dm.getUsers().size());
+        return dm.getUsers()
+                .stream()
+                .anyMatch(u -> u.getId().equals(user.getId()));
     }
 }

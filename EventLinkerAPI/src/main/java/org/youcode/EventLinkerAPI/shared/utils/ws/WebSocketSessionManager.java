@@ -27,4 +27,6 @@ public class WebSocketSessionManager {
         return Boolean.TRUE.equals(redisTemplate.hasKey(key))
                 && !redisTemplate.opsForSet().members(key).isEmpty();
     }
+
+
 }
