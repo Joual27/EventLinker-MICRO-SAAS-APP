@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class WebSocketGlobalExceptionHandler {
-
     @MessageExceptionHandler(AccessDeniedException.class)
     @SendToUser("/queue/errors")
     public ErrorDTO handleAccessDeniedException(AccessDeniedException e){

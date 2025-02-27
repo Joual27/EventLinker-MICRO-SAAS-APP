@@ -19,7 +19,7 @@ import java.security.Principal;
 import java.util.List;
 
 
-@RequestMapping("/ws/messages")
+
 @AllArgsConstructor
 @Controller
 public class MessageController {

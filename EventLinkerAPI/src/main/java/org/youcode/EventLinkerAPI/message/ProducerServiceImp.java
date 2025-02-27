@@ -49,7 +49,12 @@ public class ProducerServiceImp implements ProducerService {
         return message;
     }
 
-    private boolean isUserDM(DM dm , User user){
-        return dm.getUsers().contains(user);
+    private boolean isUserDM(DM dm, User user) {
+
+        System.out.println( " IM IM LOGGED USER" + user.getId());
+        System.out.println("LENGTH" + dm.getUsers().size());
+        return dm.getUsers()
+                .stream()
+                .anyMatch(u -> u.getId().equals(user.getId()));
     }
 }

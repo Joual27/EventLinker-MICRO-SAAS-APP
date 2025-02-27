@@ -20,7 +20,7 @@ import java.util.Set;
 public class DM extends BaseEntity {
     @OneToMany(mappedBy = "dm")
     private List<Message> messages;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "dm_participants",
             joinColumns = @JoinColumn(name = "dm_id"),
