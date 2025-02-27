@@ -1,4 +1,4 @@
-package org.youcode.EventLinkerAPI.shared.utils.exceptionHandling;
+package org.youcode.EventLinkerAPI.shared.utils.exceptionHandling.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -13,6 +13,7 @@ import org.youcode.EventLinkerAPI.message.interfaces.ProducerService;
 import org.youcode.EventLinkerAPI.message.mapper.MessageMapper;
 import org.youcode.EventLinkerAPI.user.User;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 
@@ -26,8 +27,8 @@ public class ProducerServiceImp implements ProducerService {
     private final KafkaTemplate<String , Message> kafkaTemplate;
 
     @Override
-    public MessageResponseDTO sendMessage(SendMessageDTO data) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public MessageResponseDTO sendMessage(SendMessageDTO data , Principal principal) {
+        User user = (User) principal;
         DM existingDm = dmService.getDMEntityById(data.dmId());
         if (!isUserDM(existingDm , user)){
             throw new AccessDeniedException("You 't belong to this DM !");

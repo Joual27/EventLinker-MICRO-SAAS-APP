@@ -15,6 +15,7 @@ import org.youcode.EventLinkerAPI.message.interfaces.MessageService;
 import org.youcode.EventLinkerAPI.message.interfaces.ProducerService;
 import org.youcode.EventLinkerAPI.shared.utils.DTOs.SuccessDTO;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -28,8 +29,8 @@ public class MessageController {
 
 
     @MessageMapping("/send")
-    public ResponseEntity<SuccessDTO<MessageResponseDTO>> sendMessage(@Payload SendMessageDTO req){
-        MessageResponseDTO res = producerService.sendMessage(req);
+    public ResponseEntity<SuccessDTO<MessageResponseDTO>> sendMessage(@Payload SendMessageDTO req , Principal principal){
+        MessageResponseDTO res = producerService.sendMessage(req , principal);
         return new ResponseEntity<>(new SuccessDTO<>("success", "message sent successfully !" , res) , HttpStatus.CREATED);
     }
 
