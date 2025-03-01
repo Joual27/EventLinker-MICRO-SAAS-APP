@@ -8,7 +8,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.youcode.EventLinkerAPI.message.DTOs.MessageResponseDTO;
 import org.youcode.EventLinkerAPI.message.DTOs.SendMessageDTO;
 import org.youcode.EventLinkerAPI.message.interfaces.MessageService;
@@ -29,9 +28,8 @@ public class MessageController {
 
 
     @MessageMapping("/send")
-    public ResponseEntity<SuccessDTO<MessageResponseDTO>> sendMessage(@Payload SendMessageDTO req , Principal principal){
-        MessageResponseDTO res = producerService.sendMessage(req , principal);
-        return new ResponseEntity<>(new SuccessDTO<>("success", "message sent successfully !" , res) , HttpStatus.CREATED);
+    public void sendMessage(@Payload SendMessageDTO req , Principal principal){
+        producerService.sendMessage(req , principal);
     }
 
     @GetMapping("/dms/{dmId}/undelivered")

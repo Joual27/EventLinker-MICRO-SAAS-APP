@@ -33,7 +33,7 @@ public class Worker extends User {
     private List<Withdrawal> withdrawals;
 
     @Override
-    protected String getUserRole() {
+    public String getUserRole() {
         return "WORKER";
     }
 }

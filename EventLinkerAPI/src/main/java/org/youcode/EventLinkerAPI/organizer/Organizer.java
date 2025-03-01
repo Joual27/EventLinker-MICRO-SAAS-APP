@@ -23,7 +23,7 @@ public class Organizer extends User {
     private List<Event> events;
 
     @Override
-    protected String getUserRole() {
+    public String getUserRole() {
         return "ORGANIZER";
     }
 }

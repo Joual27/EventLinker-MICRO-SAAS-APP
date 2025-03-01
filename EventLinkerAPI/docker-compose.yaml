@@ -45,6 +45,18 @@ services:
     networks:
       - app-network
 
+  angular-app:
+    build:
+      context: ../EventLinkerFrontEnd/
+      dockerfile: DockerFile
+    container_name: angular-app
+    volumes:
+      - ../EventLinkerFrontEnd:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    command: npm run start
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: event_linker_zookeeper

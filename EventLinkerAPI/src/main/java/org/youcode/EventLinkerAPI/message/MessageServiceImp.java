@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.DM.DM;
 import org.youcode.EventLinkerAPI.DM.interfaces.DMService;
+import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
 import org.youcode.EventLinkerAPI.message.DTOs.MessageResponseDTO;
 import org.youcode.EventLinkerAPI.message.interfaces.MessageService;
 import org.youcode.EventLinkerAPI.message.mapper.MessageMapper;
@@ -34,5 +35,11 @@ public class MessageServiceImp implements MessageService {
 
     private boolean isUserDM(DM dm , User user){
         return dm.getUsers().contains(user);
+    }
+
+    @Override
+    public Message getMessageEntityById(Long id ){
+        return messageDAO.findByIdWithRelations(id)
+                .orElseThrow(() -> new EntityNotFoundException("NO MESSAGE FOUND WITH GIVEN ID ! "));
     }
 }

@@ -11,7 +11,7 @@ import org.youcode.EventLinkerAPI.user.User;
 @Entity
 public class Admin extends User {
     @Override
-    protected String getUserRole() {
+    public String getUserRole() {
         return "ADMIN";
     }
 }

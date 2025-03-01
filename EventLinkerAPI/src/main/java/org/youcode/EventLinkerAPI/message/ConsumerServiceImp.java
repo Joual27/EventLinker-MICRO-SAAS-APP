@@ -1,5 +1,6 @@
 package org.youcode.EventLinkerAPI.message;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -7,25 +8,30 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.youcode.EventLinkerAPI.DM.DM;
 import org.youcode.EventLinkerAPI.exceptions.EntityNotFoundException;
+import org.youcode.EventLinkerAPI.message.DTOs.MessageResponseDTO;
 import org.youcode.EventLinkerAPI.message.interfaces.ConsumerService;
+import org.youcode.EventLinkerAPI.message.interfaces.MessageService;
 import org.youcode.EventLinkerAPI.user.User;
 
 import java.time.LocalDateTime;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class ConsumerServiceImp implements ConsumerService {
     private final SimpMessagingTemplate messagingTemplate;
     private final RedisTemplate<String , String> redisTemplate;
     private final MessageDAO messageDAO;
+    private final MessageService messageService;
 
-    @KafkaListener(topics = "direct-messages" , groupId = "message-group")
+    @KafkaListener(topics = "direct-messages" , groupId = "message-group" , containerFactory = "messageListenerFactory")
     @Override
-    public void processMessage(Message message) {
-        User recipient = getMessageRecipient(message);
+    public void processMessage(MessageResponseDTO message) {
+        Message existingMsg = messageService.getMessageEntityById(message.id());
+        User recipient = getMessageRecipient(existingMsg);
         if (recipientIsOnline(recipient.getId())){
-            sendThroughSockets(message , message.getDm());
-            markAsDelivered(message);
+            sendThroughSockets( message , existingMsg.getDm());
+            markAsDelivered(existingMsg);
         }
     }
 
@@ -36,7 +42,7 @@ public class ConsumerServiceImp implements ConsumerService {
                 .orElseThrow(() -> new EntityNotFoundException("GIVEN USER ID DOESNT BELONG TO THIS DM !"));
     }
 
-    private void sendThroughSockets(Message message , DM dm){
+    private void sendThroughSockets(MessageResponseDTO message , DM dm){
         String destination = "/topic/dm/" + dm.getId();
         messagingTemplate.convertAndSend(destination , message);
     }
@@ -52,6 +58,7 @@ public class ConsumerServiceImp implements ConsumerService {
         message.setDeliveredAt(LocalDateTime.now());
         return messageDAO.save(message);
     }
+
 
 
 
