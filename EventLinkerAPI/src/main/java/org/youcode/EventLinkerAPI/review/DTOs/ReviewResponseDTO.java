@@ -5,5 +5,5 @@ import org.youcode.EventLinkerAPI.user.DTOs.EmbeddedUserDTO;
 
 import java.time.LocalDateTime;
 
-public record ReviewResponseDTO(Long id , String comment , LocalDateTime createdAt , EmbeddedApplicationDTO application , EmbeddedUserDTO reviewer , EmbeddedUserDTO reviewee) {
+public record ReviewResponseDTO(Long id , String comment , int rating , LocalDateTime createdAt , EmbeddedApplicationDTO application , EmbeddedUserDTO reviewer , EmbeddedUserDTO reviewee) {
 }

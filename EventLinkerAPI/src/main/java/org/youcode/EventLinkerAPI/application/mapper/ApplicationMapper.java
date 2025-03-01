@@ -15,6 +15,6 @@ import org.youcode.EventLinkerAPI.shared.utils.interfaces.mappers.BaseResponseMa
 import org.youcode.EventLinkerAPI.shared.utils.interfaces.mappers.BaseUpdateMapper;
 import org.youcode.EventLinkerAPI.user.mapper.UserMapper;
 
-@Mapper(componentModel = "spring" , uses = {AnnouncementMapper.class , UserMapper.class , ReviewMapper.class , PaymentMapper.class})
+@Mapper(componentModel = "spring" , uses = {AnnouncementMapper.class , UserMapper.class  , PaymentMapper.class})
 public interface ApplicationMapper extends BaseCreateMapper<Application , CreateApplicationDTO> , BaseUpdateMapper<Application , UpdateApplicationDTO> , BaseResponseMapper<Application , ApplicationResponseDTO> , BaseEmbeddedMapper<Application , EmbeddedApplicationDTO> {
 }
