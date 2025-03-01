@@ -2,10 +2,7 @@ package org.youcode.EventLinkerAPI.user;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,8 +37,8 @@ public abstract class User implements UserDetails {
     @OneToMany(mappedBy = "reviewee")
     private List<Review> receivedReviews;
 
-
     @ManyToMany(mappedBy = "users")
+    @EqualsAndHashCode.Exclude
     private Set<DM> dms;
 
     @OneToMany(mappedBy = "user")
@@ -52,7 +49,7 @@ public abstract class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_"+ getUserRole()));
     }
 
-    protected abstract String getUserRole();
+    public abstract String getUserRole();
 
     public String getUsernameField(){
         return username;

@@ -1,11 +1,9 @@
 package org.youcode.EventLinkerAPI.message;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.youcode.EventLinkerAPI.DM.DM;
-import org.youcode.EventLinkerAPI.message.embeddabales.MessageKey;
+import org.youcode.EventLinkerAPI.shared.utils.BaseEntity;
 import org.youcode.EventLinkerAPI.user.User;
 
 import java.time.LocalDateTime;
@@ -14,19 +12,17 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Message {
-    @EmbeddedId
-    private MessageKey id;
-
+@Getter
+@Setter
+public class Message extends BaseEntity {
     @ManyToOne
-    @MapsId("dmId")
     @JoinColumn(name = "DM_ID")
+    @EqualsAndHashCode.Exclude
     private DM dm;
 
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "USER_ID")
+    @EqualsAndHashCode.Exclude
     private User user;
 
     private LocalDateTime sentAt;
