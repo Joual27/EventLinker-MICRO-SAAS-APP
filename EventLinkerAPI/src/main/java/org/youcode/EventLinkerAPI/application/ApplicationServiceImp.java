@@ -87,8 +87,8 @@ public class ApplicationServiceImp implements ApplicationService {
 
     @Override
     public void verifyPayabilityOfApplication(Application application) {
-        if (!application.getStatus().equals(ApplicationStatus.ACCEPTED)){
-            throw new UnpayableApplicationStatusException("You can only pay accepted applications !");
+        if (!application.getStatus().equals(ApplicationStatus.CONFIRMED)){
+            throw new UnpayableApplicationStatusException("You can only pay CONFIRMED applications !");
         }
     }
 
