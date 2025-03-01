@@ -37,13 +37,7 @@ public class ReviewServiceImp implements ReviewService {
 
 
     private void validateRolesConstraints(User reviewer , User reviewee){
-        String reviewerRole = reviewer.getUserRole();
-        String revieweeRole = reviewee.getUserRole();
-
-        if (reviewerRole.equals("ADMIN") || revieweeRole.equals("ADMIN")){
-            throw new AccessDeniedException("ADMINS AREN'T CONCERNED BY REVIEWS !");
-        }
-        if (revieweeRole.equals(revieweeRole)){
+        if (reviewer.getUserRole().equals(reviewee.getUserRole())){
             throw new InvalidReviewConstraintsException("Reviewer and reviewee can't have the same role !");
         }
     }
