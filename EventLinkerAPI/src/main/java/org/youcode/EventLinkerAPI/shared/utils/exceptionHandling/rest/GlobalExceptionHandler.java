@@ -110,4 +110,10 @@ public class GlobalExceptionHandler {
     public ErrorDTO handleInsufficientBalanceException(InsufficientBalanceException e) {
         return new ErrorDTO(HttpStatus.UNPROCESSABLE_ENTITY.value(), e.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(InvalidReviewConstraintsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleInsufficientBalanceException(InvalidReviewConstraintsException e) {
+        return new ErrorDTO(HttpStatus.BAD_REQUEST.value(), e.getMessage(), LocalDateTime.now());
+    }
 }

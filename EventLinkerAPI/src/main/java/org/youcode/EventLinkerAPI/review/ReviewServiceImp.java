@@ -17,7 +17,6 @@ import org.youcode.EventLinkerAPI.user.interfaces.UserService;
 @AllArgsConstructor
 @Service
 public class ReviewServiceImp implements ReviewService {
-
     private final ReviewDAO reviewDAO;
     private final ReviewMapper reviewMapper;
     private final ApplicationService applicationService;
@@ -28,8 +27,13 @@ public class ReviewServiceImp implements ReviewService {
         Application existingApplication = applicationService.getApplicationEntityById(data.applicationId());
         User reviewer = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User reviewee = userService.getUserEntityById(data.revieweeId());
+        validateRolesConstraints(reviewer , reviewee);
+        validateApplicationPaymentStatus(existingApplication);
+        checkForExistingReview(reviewer , reviewee , existingApplication);
+        Review reviewToSubmit = reviewMapper.toEntity(data);
+        Review createdReview = reviewDAO.save(reviewToSubmit);
+        return reviewMapper.toResponseDTO(createdReview);
     }
-
 
 
     private void validateRolesConstraints(User reviewer , User reviewee){
@@ -42,6 +46,18 @@ public class ReviewServiceImp implements ReviewService {
         if (revieweeRole.equals(revieweeRole)){
             throw new InvalidReviewConstraintsException("Reviewer and reviewee can't have the same role !");
         }
-
     }
+
+    private void validateApplicationPaymentStatus(Application application){
+        if (!application.getPayment().getStatus().equals("succeeded")){
+            throw new InvalidReviewConstraintsException("The application should be already payed before giving reviews");
+        }
+    }
+
+    private void checkForExistingReview(User reviewer , User reviewee , Application application){
+        if (reviewDAO.findByReviewerAndRevieweeAndApplication(reviewer , reviewee , application).isPresent()){
+            throw new InvalidReviewConstraintsException("You have already gave a review related to this job !");
+        }
+    }
+
 }
