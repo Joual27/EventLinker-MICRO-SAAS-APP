@@ -25,8 +25,6 @@ public class MessageController {
 
     private final MessageService messageService;
     private final ProducerService producerService;
-
-
     @MessageMapping("/send")
     public void sendMessage(@Payload SendMessageDTO req , Principal principal){
         producerService.sendMessage(req , principal);
