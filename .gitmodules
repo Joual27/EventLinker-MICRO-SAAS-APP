@@ -1,0 +1,6 @@
+[submodule "EventLinkerFrontEnd/API"]
+	path = EventLinkerFrontEnd/API
+	url = https://github.com/Joual27/EVENT-LINKER-BACK-END
+[submodule "EventLinkerFrontEnd/FRONT-END"]
+	path = EventLinkerFrontEnd/FRONT-END
+	url = https://github.com/Joual27/EVENT-LINKER-FRONT-END
