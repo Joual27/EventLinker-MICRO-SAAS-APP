@@ -4,4 +4,5 @@ import org.youcode.EventLinkerAPI.announcement.DTOs.AnnouncementResponseDTO;
 
 public interface AdminService {
     AnnouncementResponseDTO updateAnnouncementStatus(String expectedOperation , Long announcementId);
+
 }
