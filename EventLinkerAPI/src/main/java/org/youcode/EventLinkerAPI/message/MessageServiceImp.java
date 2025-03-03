@@ -27,7 +27,7 @@ public class MessageServiceImp implements MessageService {
         DM existingDm = dmService.getDMEntityById(dmId);
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!isUserDM(existingDm , authenticatedUser)){
-            throw new AccessDeniedException("You only see messages of your dms !");
+            throw new AccessDeniedException("You only see messages of your dms ! ");
         }
         List<Message> undeliveredMessages = messageDAO.findByDmAndDeliveredFalseAndUserNot(existingDm, authenticatedUser);
         return undeliveredMessages.stream().map(messageMapper::toResponseDTO).toList();
