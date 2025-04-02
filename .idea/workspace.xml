@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="910242a4-189d-4235-a273-cb4405494842" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitmodules" beforeDir="false" afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api" beforeDir="false" afterPath="$PROJECT_DIR$/api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/announcement/AnnouncementController.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/announcement/AnnouncementController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/announcement/AnnouncementServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/announcement/AnnouncementServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/announcement/interfaces/AnnouncementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/announcement/interfaces/AnnouncementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/config/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/config/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/skill/SkillService.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/org/youcode/EventLinkerAPI/skill/interfaces/SkillService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end" beforeDir="false" afterPath="$PROJECT_DIR$/front-end" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/components/announcement-form-popup/announcement-form-popup.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/components/announcement-form-popup/announcement-form-popup.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/components/announcement-form-popup/announcement-form-popup.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/components/announcement-form-popup/announcement-form-popup.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/components/announcement-list/announcement-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/components/announcement-list/announcement-list.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/models/organizer.models.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/models/organizer.models.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/pages/announcements-page/announcements-page.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/pages/announcements-page/announcements-page.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/pages/announcements-page/announcements-page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/pages/announcements-page/announcements-page.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.effects.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.effects.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.reducers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.reducers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.selectors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.selectors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.state.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/app/modules/organizer/state/organizer.state.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2uv05VKokgEVWigz2xxyKP85HyX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/atm/Desktop/EventLinker/api",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="910242a4-189d-4235-a273-cb4405494842" name="Changes" comment="" />
+      <created>1743113557472</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743113557472</updated>
+      <workItem from="1743113558625" duration="14000" />
+    </task>
+    <servers />
+  </component>
+</project>
